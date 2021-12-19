@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+    <body>
+        <div id="root"></div>
+    </body>
+    <!--react : Interactive한 UI를 만들 수 있게 해주는 엔진 역할-->
+    <script src="https://unpkg.com/react@17.0.2/umd/react.production.min.js"></script>
+    <!--react-dom : React 요소를 HTML에 둘 수 있게 해주는 역할-->
+    <script src="https://unpkg.com/react-dom@17.0.2/umd/react-dom.production.min.js"></script>
+    
+    <!--JSX 코드를 브라우저가 이해할 수 있게 해주는 역할-->
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script type="text/babel">
+        const root = document.getElementById("root");
+        //엘리먼트 명 첫글자는 반드시 대문자로 한다
+        function Title() {
+            return ( 
+                <h3 id ="title" onMouseEnter={()=>console.log("MouseEnter")}>
+                    Hello I am a Title
+                </h3>
+            );
+        }
+        const Button = () => (
+            <button
+            style={{backgroundColor: "tomato"}}
+            onClick={()=> console.log("I am Clicked")}
+            >
+            Click Me
+            </button>
+        );
+        // button 과 span 을 담을 div 요소 생성
+        // 컴포넌트 첫 글자는 반드시 대문자여야 한다
+        // 소문자면 jsx랑 react가 html 태그로 착각함
+        const Container = () => (
+            <div>
+                <Title />
+                <Button />
+                <BadContainer />
+                <BestContainer />
+            </div>
+        );
+
+        let count = 0;
+        ///////////////////////////////////////////////
+        // State Bad Example
+        // count는 증가하지만 UI가 업데이트 되지 않는다. 
+        //  -최초 렌더링된 후 리렌더링 되지 않음 => 리렌더링 함수 만들어서 업데이트 반영
+        
+        function render(){
+            ReactDOM.render(<Container />, root)
+        }
+
+        function badCountUp(){
+            count = count + 1;
+            //리렌더링을 위해 다시 렌더한다?
+            //좋은방법이 아님
+            render();
+        }
+
+        const BadContainer = () => (
+            <div>
+                <h3>Total Clicks: {count}</h3>
+                <button onClick={badCountUp}>Bad Click Me!</button>
+            </div>
+        );
+        //////////////////////////////////////////////////
+
+
+        //////////////////////////////////////////////////
+        // State Best Practice
+        function BestContainer(){
+            let  [count , modifier] = React.useState(0);
+            //console.log(React.userState()); => [니가 바꿀 데이터 , 데이터 바꾸는 함수]
+            const onClick = () => {
+                // 이전값 state를 기준으로 값을 변경할 때의 좋은 방법
+                // unsafe
+                //modifier(++count);
+                // safe 함수를 통해 언제나 현재 state를 얻도록 해줌
+                modifier((current) => current + 1);
+            };
+            return (
+            <div>
+                <h3>Total Clicks: {count}</h3>
+                <button onClick={onClick}>Good Click Me!</button>
+            </div>);
+        }
+        /////////////////////////////////////////////////////
+        
+        //html에 보여줌
+        ReactDOM.render(<Container />, root)
+        
+    </script>
+</html>

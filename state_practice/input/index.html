@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+
+<body>
+    <div id="root"></div>
+</body>
+<!--react : Interactive한 UI를 만들 수 있게 해주는 엔진 역할-->
+<script src="https://unpkg.com/react@17.0.2/umd/react.production.min.js"></script>
+<!--react-dom : React 요소를 HTML에 둘 수 있게 해주는 역할-->
+<script src="https://unpkg.com/react-dom@17.0.2/umd/react-dom.production.min.js"></script>
+
+<!--JSX 코드를 브라우저가 이해할 수 있게 해주는 역할-->
+<script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+<script type="text/babel">
+    const root = document.getElementById("root");
+
+    
+    function TimeConverter() {
+        const [amount, setMinutes] = React.useState(0);
+
+        // 분-> 시간 , 시간-> 분 변환 뒤집어주기
+        const [flipped , setFlipped] = React.useState(false);
+
+        const onChange = (event) => {
+            //event.target.value 로 접근
+            setMinutes(event.target.value);
+        }
+        // 초기화 함수
+        const reset = () => setMinutes(0);
+        const onFlip = () => {
+            reset();
+            setFlipped(current => !current);
+        };
+        // JSX
+        // for , class 같은 거 못씀
+        // ex) for => htmlFor
+        // ex) class => className
+        return (
+            <div>
+                <label htmlFor="minutes">분 </label>
+                <input
+                    value={amount}
+                    onChange={onChange}
+                    disabled={flipped}
+                    id="minutes" placeholder='Mins' type="number"></input>
+                <h4>{amount} 분 -> 시간 변환</h4>
+                <label htmlFor="hours">시간 </label>
+                <input
+                    value={(flipped) ? amount : (amount / 60)}
+                    onChange={onChange}
+                    disabled={!flipped}
+                    id="hours" placeholder='Hours' type="number"></input>
+                <button onClick={reset}>
+                    Reset
+                </button>
+                <button onClick={onFlip}>
+                    {flipped ? "Turn Back" : "Invert"}
+                </button>
+            </div>
+        )
+    }
+    function DistanceConverter(){
+           return "Distance Converter" 
+    }
+    function App() {
+        const [index , setIndex] = React.useState("0");
+        const onSelect = (event) => {
+            //event.target.value
+            console.log(event.target.value)
+            setIndex(event.target.value);
+        }
+        return (
+            <div>
+                <h1>Converter</h1>
+                <select value={index} onChange={onSelect}>
+                    <option value="0">Time</option>
+                    <option value="1">Distance</option>
+                </select>
+                {index === "0" ? <TimeConverter /> : null}
+                {index === "1" ? <DistanceConverter /> : null}
+            </div>
+        )
+    }
+    /*
+    속성으로 value 를 가질 수 있으면 onChange 속성을 붙일 수 있다.
+    SELECT, OPTION에도 붙힐 수 있다
+
+    useState의 두번째 인자인 modifier함수를 실행하면 해당 컴포넌트가 리렌더링 된다.
+    [리렌더링 조건]
+    1) props이 바뀔때
+    2) state가 바뀔때
+    3) 부모 컴포넌트가 리렌더링 될 때
+    */
+    ReactDOM.render(<App />, root)
+
+</script>
+
+</html>

@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+
+<body>
+    <div id="root"></div>
+</body>
+<!--react : Interactive한 UI를 만들 수 있게 해주는 엔진 역할-->
+<script src="https://unpkg.com/react@17.0.2/umd/react.production.min.js"></script>
+<!--react-dom : React 요소를 HTML에 둘 수 있게 해주는 역할-->
+<script src="https://unpkg.com/react-dom@17.0.2/umd/react-dom.production.min.js"></script>
+<script>
+    const root = document.getElementById("root");
+    //h3 요소 생성
+    const h3 = React.createElement("h3"
+        , { id: "id-span", style: { color: 'red' }, onMouseEnter: () => console.log("Mouse Enter")}
+        , "Hello I am a span");
+
+    //button 요소 생성
+    const btn = React.createElement("button",
+        { onClick: () => console.log("Click") }
+        , "Click me");
+
+    //button 과 span 을 담을 div 요소 생성
+    const container = React.createElement("div", null, [h3, btn]);
+
+
+    //html에 보여줌
+    ReactDOM.render(container, root)
+
+        // 바닐라 자바스크립트에서 HTML을 먼저 만들고
+        // JS로 가져와서 HTML을 수정하는 방법이었다면
+
+        // ReactJS 에서는 JS로 시작하여 그 다음에 HTML이 된다.
+
+        // HTML을 만들고 찾아서 가져오고 필요할 때 업데이트 할 필요 없이
+        // ReactJS 에게 업데이트 해야 하는 HTML을 업데이트
+
+        //JS를 이용해 element 를 생성하고 ReactJS가 html로 번역
+
+        //하나하나 event 리스너를 추가할 필요 없이 
+        //요소 하나를 생성할 때 프로퍼티에서 event를 지정할 수 잇다.
+
+</script>
+
+</html>

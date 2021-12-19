@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+    <body>
+        <span>Total Clicks: 0 </span>
+        <button id = 'btn'>Click me</button>
+    </body>
+    <script>
+        let counter = 0;
+        const button = document.getElementById('btn');
+        const span = document.querySelector('span');
+        function handleClick() {
+            counter = counter + 1;
+            span.innerText = `Total Clicks: ${counter}`;
+        }
+        button.addEventListener("click",handleClick);
+
+        // 1. HTML 만들고
+        // 2. Javscript 에서 가져오고
+        // 3. Event 를 감지하고
+        // 4. 데이터를 업데이트 한다.
+        // 5. HTML 에 반영한다.
+    </script>
+</html>
