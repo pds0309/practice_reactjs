@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+
+<body>
+    <div id="root"></div>
+</body>
+<!--react : Interactive한 UI를 만들 수 있게 해주는 엔진 역할-->
+<script src="https://unpkg.com/react@17.0.2/umd/react.development.js"></script>
+<!--react-dom : React 요소를 HTML에 둘 수 있게 해주는 역할-->
+<script src="https://unpkg.com/react-dom@17.0.2/umd/react-dom.production.min.js"></script>
+
+<!--prop-types : React에게 컴포넌트의 prop 타입을 알려주는 역할-->
+<script src="https://unpkg.com/prop-types@15.7.2/prop-types.js"></script>
+
+<!--JSX 코드를 브라우저가 이해할 수 있게 해주는 역할-->
+<script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+<script type="text/babel">
+    //컴포넌트 -> 함수 -> 재사용
+
+    //props 인자를 통해 버튼 내부 요소를 재사용
+    function Btn({ text, big , changeValue }) {
+        console.log({ text , big });
+        return (
+            <button
+                onClick={changeValue}
+                style={{
+                    backgroundColor: 'tomato',
+                    color: 'white',
+                    padding: "10px 20px",
+                    border: 0,
+                    borderRadius: 10,
+                    fontSize: big ? 18 : 10,
+                }}
+            >
+                {text}
+            </button>
+        )
+    }
+    //proptypes
+    //default => Optional   , isRequired 붙이면 필수 
+    Btn.propTypes = {
+        text: PropTypes.string.isRequired,
+        fontSize: PropTypes.number,
+    };
+
+    //React Memo - 컴포넌트를 기억해두고 컴포넌트에 변화가 없으면 다시 렌더링 하지않게 하는 것
+    const MemorizedBtn = React.memo(Btn);
+    
+    function App() {
+        const [value , setValue] = React.useState("Save Change");
+        const changeValue = () => setValue("Revert Change");
+        
+        //inside of JSX
+        //prop을 가져와 속성을 적용시킴, 실제 html태그 안에 들어가지 않음
+        return (
+            <div>
+                <Btn text={value} big={true} changeValue={changeValue}/>
+                <MemorizedBtn text="안녕" big={false}/>
+            </div>);
+    }
+
+    const root = document.getElementById("root");
+    ReactDOM.render(<App />, root)
+
+</script>
+
+</html>
